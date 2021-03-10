@@ -1,33 +1,60 @@
 // scuffold project main.go
 package main
 
+/*
 import (
-	"fmt"
 	"log"
+	"os"
+	"strings"
+	"text/template"
 )
 
+/*
+const letter = `
+Dear {{.Name}},
+{{- if .Attended}}
+It was a pleasure to see you at the wedding.
+{{- else}}
+It is a shame you couldn't make it to the wedding.
+{{- end}}
+{{with .Gift -}}
+{{title .}}
+Thank you for the lovely {{.}}.
+{{- end}}
+Best wishes,
+Josie
+`
+
+// Prepare some data to insert into the template.
+type Recipient struct {
+	Name, Gift string
+	Attended   bool
+}
+
+var recipient = Recipient{
+	"Aunt Mildred", "bone china tea set", false}
+
 func main() {
-	fmt.Println("start")
+	funcMap := template.FuncMap{
+		"title": strings.Title,
+	}
 
-	e := new(Engine)
-	/*
-		d := NewDirectoryGenerator()
-		d.Add("generator/misc")
+	tg := NewTemplateGenerator(funcMap)
 
-		c := NewCopyGenerator()
-		if err := c.Add("doc.go", "generator/misc/"); err != nil {
-			log.Fatal(err)
-		}
-
-		e.AddGenerator(d)
-		e.AddGenerator(c)
-	*/
-
-	if err := e.Run(); err != nil {
+	if err := tg.Add(tg.Template("letter").Parse(letter)); err != nil {
 		log.Fatal(err)
 	}
 
-	log.Println("done")
+	if tg.ParseWriter("letter", os.Stdout, recipient) != nil {
+		log.Fatal("parse failed")
+	}
+
+	if err := tg.Run(); err != nil {
+		log.Fatal(err)
+	} else {
+		log.Println("letter test")
+	}
+
 }
 
 /*
@@ -75,3 +102,7 @@ func main() {
 
 }
 */
+
+func main() {
+
+}

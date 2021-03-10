@@ -28,36 +28,35 @@ type templateOutput struct {
 
 // NewTemplateGenerator creates an new Generator which uses an option FuncMap to enrich
 // the available functions that can be directly used within templates
-func NewTemplateGenerator(fmap *template.FuncMap) *TemplateGenerator {
+func NewTemplateGenerator(fmap template.FuncMap) *TemplateGenerator {
 	tg := new(TemplateGenerator)
 	if fmap != nil {
-		tg.funcmap = *fmap
+		tg.funcmap = fmap
 	}
 	tg.templates = make(map[string]template.Template)
 	return tg
 }
 
-// AddTemplate adds a template to the generator. It takes a template and an error
-// to be used convinently with existing template functions
-//    e.g AddTemplate(template.New("letter").Parse(letter))
-func (tg *TemplateGenerator) AddTemplate(tpl *template.Template, err error) error {
-	var tmpl *template.Template
+// Template creates a *template.Template with or without FuncMap and returns it
+func (tg *TemplateGenerator) Template(name string) (tpl *template.Template) {
+	if len(tg.funcmap) > 0 {
+		tpl = template.New(name).Funcs(tg.funcmap)
+	} else {
+		tpl = template.New(name)
+	}
+	return tpl
 
+}
+
+// Add adds a template to the generator. It takes a template and an error
+// to be used convinently with existing template functions
+//    e.g tg.Add(tg.Template("letter").Parse(letter))
+func (tg *TemplateGenerator) Add(tpl *template.Template, err error) error {
 	if err != nil {
 		return err
 	}
 
-	name := tpl.Name()
-	if tg.funcmap != nil {
-		tmpl = tpl.New(name).Funcs(tg.funcmap)
-
-	} else {
-		tmpl = tpl.New(name)
-	}
-	if err != nil {
-		return fmt.Errorf("Error in adding templates: %s", err)
-	}
-	tg.templates[name] = *tmpl
+	tg.templates[tpl.Name()] = *tpl
 	return nil
 }
 

@@ -28,9 +28,7 @@ func (d *CopyGenerator) Add(file, todir string) error {
 	if !fileExist(file) {
 		return fmt.Errorf("copy source '%v' does not exist", file)
 	}
-
-	to := filepath.Dir(todir) + "\\" + filepath.Base(file)
-
+	to := filepath.Join(todir, filepath.Base(file))
 	ft := fromTo{From: file, To: to}
 	d.files = append(d.files, ft)
 	return nil
@@ -45,4 +43,12 @@ func (d CopyGenerator) Run() error {
 		}
 	}
 	return nil
+}
+
+func (d CopyGenerator) GetFiles() string {
+	var txt string
+	for _, ft := range d.files {
+		txt += fmt.Sprintf("[%s, %s]\n", ft.From, ft.To)
+	}
+	return txt
 }
