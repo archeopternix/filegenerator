@@ -4,52 +4,10 @@ package main
 import (
 	"fmt"
 	"log"
-	"os"
-	"text/template"
 )
-
-func TestTemplateGenerator() {
-	const letter = `
-Dear {{.Name}},
-{{if .Attended}}
-It was a pleasure to see you at the wedding.
-{{- else}}
-It is a shame you couldn't make it to the wedding.
-{{- end}}
-{{with .Gift -}}
-Thank you for the lovely {{.}}.
-{{end}}
-Best wishes,
-Josie
-`
-	// Prepare some data to insert into the template.
-	type Recipient struct {
-		Name, Gift string
-		Attended   bool
-	}
-	var recipient = Recipient{
-		"Aunt Mildred", "bone china tea set", false}
-
-	e := new(Engine)
-
-	t := NewTemplateGenerator(nil)
-
-	err := t.AddTemplate(template.New("letter").Parse(letter))
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	if t.ParseWriter("letter", os.Stdout, recipient) != nil {
-		log.Fatal("parse failed")
-	}
-	e.AddGenerator(t)
-	e.Run()
-
-}
 
 func main() {
 	fmt.Println("start")
-	TestTemplateGenerator()
 
 	e := new(Engine)
 	/*
