@@ -50,7 +50,20 @@ func TestTemplateGenerator(t *testing.T) {
 	} else {
 		t.Log("standard letter ok")
 	}
+}
 
+func TestTemplateGeneratorParseFilename(t *testing.T) {
+	tg := NewTemplateGenerator(nil)
+
+	if err := tg.Add(tg.Template("letter").Parse(letter)); err != nil {
+		t.Fatal(err)
+	}
+
+	if tg.ParseFilename("letter", "testletter.txt", recipient) != nil {
+		t.Fatal("parse failed")
+	}
+
+	t.Log("standard letter file parser ok")
 }
 
 func TestTemplateGeneratorWrongTemplate(t *testing.T) {
