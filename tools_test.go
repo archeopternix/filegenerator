@@ -24,9 +24,9 @@ func TestFileExist(t *testing.T) {
 }
 
 func TestCopyFiles(t *testing.T) {
-	if err := copyFile("tools.go", "not_a_real_directory\\tools.go"); err == nil {
-		t.Error("should not copy to 'not_a_real_directory'")
-	}
+	//	if err := copyFile("tools.go", "not_a_real_directory\\tools.go"); err == nil {
+	//		t.Error("should not copy to 'not_a_real_directory'")
+	//	}
 	if err := copyFile("not_a_real_file.go", "not_a_real_directory\\tools.go"); err == nil {
 		t.Error("should not find 'not_a_real_file.go'")
 	}
