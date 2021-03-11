@@ -1,4 +1,5 @@
 # filegenerator - a toolbox for file generation
+[![codecov](https://codecov.io/gh/archeopternix/filegenerator/branch/main/graph/badge.svg?token=NK2N53V1X8)](https://codecov.io/gh/archeopternix/filegenerator)
 This toolbox will help you when working with templates and setup of file structures in the context of application generation etc.
 
 ## Engine
