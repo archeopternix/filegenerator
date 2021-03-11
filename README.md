@@ -65,7 +65,7 @@ Before a template can be executed it has to be parsed. For this purpose there ar
 
 Sample:
 ```
-    const letter =` 
+const letter =` 
     Dear {{.Name}},
     {{- if .Attended}}
     It was a pleasure to see you at the wedding.

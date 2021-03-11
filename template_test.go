@@ -8,27 +8,22 @@ import (
 	"text/template"
 )
 
-const letter = `
+const letter2 = `
 Dear {{.Name}},
 {{- if .Attended}}
 It was a pleasure to see you at the wedding.
 {{- else}}
 It is a shame you couldn't make it to the wedding.
 {{- end}}
-{{with .Gift -}}
-Thank you for the lovely {{.}}.
-{{- end}}
-Best wishes,
-Josie
 `
 
 // Prepare some data to insert into the template.
-type Recipient struct {
+type Recipient2 struct {
 	Name, Gift string
 	Attended   bool
 }
 
-var recipient = Recipient{
+var recipient2 = Recipient2{
 	"Aunt Mildred", "bone china tea set", false}
 
 func TestTemplateGenerator(t *testing.T) {
@@ -36,11 +31,11 @@ func TestTemplateGenerator(t *testing.T) {
 
 	tg := NewTemplateGenerator(nil)
 
-	if err := tg.Add(tg.Template("letter").Parse(letter)); err != nil {
+	if err := tg.Add(tg.Template("letter").Parse(letter2)); err != nil {
 		t.Fatal(err)
 	}
 
-	if tg.ParseWriter("letter", ioutil.Discard, recipient) != nil {
+	if tg.ParseWriter("letter", ioutil.Discard, recipient2) != nil {
 		t.Fatal("parse failed")
 	}
 
@@ -55,11 +50,11 @@ func TestTemplateGenerator(t *testing.T) {
 func TestTemplateGeneratorParseFilename(t *testing.T) {
 	tg := NewTemplateGenerator(nil)
 
-	if err := tg.Add(tg.Template("letter").Parse(letter)); err != nil {
+	if err := tg.Add(tg.Template("letter").Parse(letter2)); err != nil {
 		t.Fatal(err)
 	}
 
-	if tg.ParseFilename("letter", "testletter.txt", recipient) != nil {
+	if tg.ParseFilename("letter", "testletter.txt", recipient2) != nil {
 		t.Fatal("parse failed")
 	}
 
@@ -69,7 +64,7 @@ func TestTemplateGeneratorParseFilename(t *testing.T) {
 func TestTemplateGeneratorWrongTemplate(t *testing.T) {
 	tg := NewTemplateGenerator(nil)
 
-	let := letter + "{"
+	let := letter2 + "{"
 	if err := tg.Add(tg.Template("letter").Parse(let)); err != nil {
 		t.Fatal("expect to fail due to error in template")
 	} else {
@@ -80,12 +75,12 @@ func TestTemplateGeneratorWrongTemplate(t *testing.T) {
 func TestTemplateGeneratorWrongTemplateName(t *testing.T) {
 	tg := NewTemplateGenerator(nil)
 
-	err := tg.Add(tg.Template("letter").Parse(letter))
+	err := tg.Add(tg.Template("letter").Parse(letter2))
 	if err != nil {
 		t.Fatal("expect to fail due to error in template")
 	}
 
-	if tg.ParseWriter("sheet", ioutil.Discard, recipient) != nil {
+	if tg.ParseWriter("sheet", ioutil.Discard, recipient2) != nil {
 		t.Log("expected fail due to wrong template name")
 	} else {
 		t.Fatal("expect to fail due to wrong template name")
@@ -104,7 +99,7 @@ func TestTemplateGeneratorFunction(t *testing.T) {
 
 	tg := NewTemplateGenerator(funcMap)
 
-	let := letter + "{{title .Name}}"
+	let := letter2 + "{{title .Name}}"
 
 	if err := tg.Add(tg.Template("letter").Parse(let)); err == nil {
 		t.Log("funcmap added and executed")
