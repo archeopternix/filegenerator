@@ -11,7 +11,7 @@ Sample code how to setup and run an Engine:
 `var e Engine`
 `err := e.Run()` 
 
-##Generator
+## Generator
 Generator is an interface and has to implemented for concrete use cases
 ```
  // Generator interface for Engine
@@ -64,7 +64,8 @@ Before a template can be executed it has to be parsed. For this purpose there ar
 `ParseFilename(name string, file string, data interface{}) error `
 
 Sample:
-   ` const letter =` `
+```
+    const letter =` 
     Dear {{.Name}},
     {{- if .Attended}}
     It was a pleasure to see you at the wedding.
@@ -79,31 +80,32 @@ Sample:
     Josie
     `
 
-`// Prepare some data to insert into the template.`
-`type Recipient struct {`
-`	Name, Gift string`
-`	Attended   bool`
-`}`
+// Prepare some data to insert into the template.
+type Recipient struct {
+	Name, Gift string
+	Attended   bool
+}
 
-`var recipient = Recipient{`
-`	"Aunt Mildred", "bone china tea set", false}`
+var recipient = Recipient{
+	"Aunt Mildred", "bone china tea set", false}
 
-`func main() {`
-`	funcMap := template.FuncMap{`
-`		"title": strings.Title,`
-`	}`
+func main() {
+	funcMap := template.FuncMap{
+		"title": strings.Title,
+	}
 
-`	tg := NewTemplateGenerator(funcMap)`
+	tg := NewTemplateGenerator(funcMap)
 
-`	if err := tg.Add(tg.Template("letter").Parse(letter)); err != nil {`
-`		log.Fatal(err)`
-`	}`
+	if err := tg.Add(tg.Template("letter").Parse(letter)); err != nil {
+		log.Fatal(err)
+	}
 
-`	if tg.ParseWriter("letter", os.Stdout, recipient) != nil {`
-`		log.Fatal("parse failed")`
-`	}`
+	if tg.ParseWriter("letter", os.Stdout, recipient) != nil {
+		log.Fatal("parse failed")
+	}`
 
-`	if err := tg.Run(); err != nil {`
-`		log.Fatal(err)`
-`	} `
-`}`
+	if err := tg.Run(); err != nil {
+		log.Fatal(err)
+	}
+}
+```
