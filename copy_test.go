@@ -3,6 +3,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"path/filepath"
 	"testing"
 )
@@ -20,7 +21,8 @@ func TestCopyAdd(t *testing.T) {
 func TestCopyGetFiles(t *testing.T) {
 	const cfile = "copy.go"
 	const cdir = "master"
-	output := fmt.Sprintf("[%s, %s]", cfile, filepath.Join(cdir, cfile))
+	output := fmt.Sprintf("[%s, %s]", cfile, filepath.Join(cdir, filepath.Base(cfile)))
+	t.Log("separator: " + string(os.PathSeparator))
 
 	d := NewCopyGenerator()
 	err := d.Add("copy.go", "master")
