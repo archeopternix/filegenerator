@@ -3,6 +3,7 @@ package filegenerator
 
 import (
 	"fmt"
+	"log"
 )
 
 // Generator interface for Engine
@@ -10,13 +11,24 @@ type Generator interface {
 	Run() error // runs the generator
 }
 
-// Engine holds all Generators and triggers the run
+// Engine holds all Generators and triggers the run. A name is needed to
+// identify each individual run
 type Engine struct {
+	Name      string
 	generator []Generator
+}
+
+func NewEngine(name string) *Engine {
+	e := new(Engine)
+	e.Name = name
+	return e
 }
 
 // AddGenerator adds a new Generator
 func (e *Engine) AddGenerator(g Generator) error {
+	if len(e.Name) < 1 {
+		return fmt.Errorf("Engine needs an name")
+	}
 	e.generator = append(e.generator, g)
 
 	return nil
@@ -24,10 +36,16 @@ func (e *Engine) AddGenerator(g Generator) error {
 
 // Run executes all Run() functions of each generator
 func (e *Engine) Run() error {
-	for _, g := range e.generator {
+	if len(e.Name) < 1 {
+		return fmt.Errorf("Engine needs a name")
+	}
+	count := 0
+	for i, g := range e.generator {
 		if err := g.Run(); err != nil {
 			return fmt.Errorf("run %v", err)
 		}
+		count = i
 	}
+	log.Printf("Engine '%s' %d lines processes\n", e.Name, count)
 	return nil
 }

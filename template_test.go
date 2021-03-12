@@ -27,7 +27,7 @@ var recipient2 = Recipient2{
 	"Aunt Mildred", "bone china tea set", false}
 
 func TestTemplateGenerator(t *testing.T) {
-	e := new(Engine)
+	e := NewEngine("TestTemplate")
 
 	tg := NewTemplateGenerator(nil)
 

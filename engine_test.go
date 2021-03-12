@@ -14,7 +14,7 @@ func (t TestGenerator) Run() error {
 }
 
 func TestRun(t *testing.T) {
-	var e Engine
+	e := NewEngine("Test")
 
 	if err := e.Run(); err != nil {
 		t.Fatalf("engine run %v", err)
@@ -24,9 +24,9 @@ func TestRun(t *testing.T) {
 }
 
 func TestGeneratorRunFail(t *testing.T) {
-	var e Engine
 	var tg TestGenerator
 
+	e := NewEngine("Test")
 	e.AddGenerator(tg)
 	if err := e.Run(); err == nil {
 		t.Errorf("engine run with test generator %v", err)

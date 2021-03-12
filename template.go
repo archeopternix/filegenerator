@@ -116,7 +116,7 @@ func (tg TemplateGenerator) Run() error {
 				return fmt.Errorf("templategenerator %v", err)
 			}
 
-			log.Printf("template '%v' generated\n", to.Name)
+			log.Printf("template '%v' generated %s\n", to.Name, to.FileName)
 		}
 	}
 	return nil
