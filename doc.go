@@ -1,5 +1,5 @@
 /*
-filegenerator - a toolbox for file generation
+Package filegenerator - a toolbox for file generation
 
 
 This toolbox will help you when working with templates and setup of file structures in the context of application generation etc.
@@ -117,4 +117,4 @@ func main() {
 }
 ```
 */
-package main
+package filegenerator

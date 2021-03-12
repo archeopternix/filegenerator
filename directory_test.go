@@ -1,5 +1,5 @@
 // scuffold project main.go
-package main
+package filegenerator
 
 import (
 	"testing"
