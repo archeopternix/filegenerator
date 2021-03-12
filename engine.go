@@ -39,13 +39,12 @@ func (e *Engine) Run() error {
 	if len(e.Name) < 1 {
 		return fmt.Errorf("Engine needs a name")
 	}
-	count := 0
+
 	for i, g := range e.generator {
 		if err := g.Run(); err != nil {
 			return fmt.Errorf("run %v", err)
 		}
-		count = i
 	}
-	log.Printf("Engine '%s' %d lines processes\n", e.Name, count)
+	log.Printf("Engine '%s'\n", e.Name)
 	return nil
 }
