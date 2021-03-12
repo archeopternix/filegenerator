@@ -2,6 +2,8 @@
 package main
 
 import (
+	"fmt"
+	"path/filepath"
 	"testing"
 )
 
@@ -16,6 +18,10 @@ func TestCopyAdd(t *testing.T) {
 }
 
 func TestCopyGetFiles(t *testing.T) {
+	const cfile = "copy.go"
+	const cdir = "master"
+	output := fmt.Sprintf("[%s, %s]", cfile, filepath.Join(cdir, cfile))
+
 	d := NewCopyGenerator()
 	err := d.Add("copy.go", "master")
 	if err != nil {
@@ -23,8 +29,8 @@ func TestCopyGetFiles(t *testing.T) {
 	}
 	txt := d.GetFiles()
 
-	if txt != "[copy.go, master\\copy.go]\n" {
-		t.Errorf("copy job is wrong: %s expected: [copy.go, master\\copy.go]", txt)
+	if txt != output+"\n" {
+		t.Errorf("copy job is wrong: %s expected: %s", txt, output)
 	} else {
 		t.Log("copy job is right")
 	}
